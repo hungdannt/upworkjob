@@ -27,7 +27,6 @@
         <field name="arch" type="xml">
             <field name="company_registry" position="after">
                 <field name="cin_number" placeholder="CIN Number"/>
-                <field name="gstin" placeholder="GST Number"/>
             </field>
         </field>
     </record>

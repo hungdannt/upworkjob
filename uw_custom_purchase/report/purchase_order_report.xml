@@ -75,10 +75,7 @@
                     <tr>
                         <td class="po-center">
                             GST.No: 
-                            <t t-if="o.company_id.gstin">
-                                <span t-field="o.company_id.gstin"/>
-                            </t>
-                            <t t-else="">
+                            <t t-if="o.company_id.vat">
                                 <span t-field="o.company_id.vat"/>
                             </t>
                         </td>
@@ -105,9 +102,9 @@
                         <td rowspan="3" style="width: 60%;">
                             <span t-field="o.partner_id.name"/> <br/> 
                             <span t-field="o.partner_id.street"/> 
-                            <t t-if="o.partner_id.gstin">
+                            <t t-if="o.partner_id.vat">
                                 <br/>
-                                GSTIN: <span t-field="o.partner_id.gstin"/>
+                                GSTIN: <span t-field="o.partner_id.vat"/>
                             </t>
                             <t t-if="o.partner_id.code">
                                 <br/>
