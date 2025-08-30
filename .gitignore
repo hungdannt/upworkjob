@@ -1,0 +1,42 @@
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+*.swp
+*.swo
+
+# Python / Odoo
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+*.eggs/
+*.mo
+*.pot
+*.log
+
+# IDE / Editor
+.vscode/
+.idea/
+
+# Node / JS deps
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Odoo specific
+*.zip
+*.tar.gz
+*.tgz
+*.sass-cache
+*.coverage
+*.pot
+*.retry
+
+# Vendor libs inside Odoo addons
+/odoo/addons/*/static/lib/*

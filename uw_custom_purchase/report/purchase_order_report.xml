@@ -1,0 +1,293 @@
+<odoo>
+    <record id="uk_purchase_order_report" model="ir.actions.report">
+        <field name="name">Purchase Order(New)</field>
+        <field name="model">purchase.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">uw_custom_purchase.uw_purchase_order_template</field>
+        <field name="report_file">uw_custom_purchase.uw_purchase_order_template</field>
+        <field name="print_report_name">object._get_report_filename()</field>
+        <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="uw_purchase_order_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+            <!-- <t t-set="doc" t-value="docs[0]"/> -->
+            <t t-set="o" t-value="doc_ids and docs or doc"/>
+            <!-- <t t-set="company" t-value="doc.company_id"/> -->
+            <div class="page">
+                <style>
+                    * {
+                        font-family: 'Segoe UI', sans-serif;
+
+                    }
+
+                    .po-table {
+                        width: 100%;
+                        <!-- border-collapse: collapse; -->
+                        <!-- border: 2px solid black; -->
+                        font-size: 14px !important;
+                    }
+                    .po-table td, .po-table th {
+                        padding: 2px 3px !important;
+                    }
+                    .po-header {
+                        font-size: 14px !important;
+                        background-color: #f5f5f5 !important;
+                        font-weight: bold !important;
+                        text-align: center !important;
+
+                    }
+                    .po-center { text-align: center !important; }
+                    .po-right { text-align: right !important; }
+                    .po-bold { font-weight: bold !important}
+                    .po-title {
+                        background-color: #e6e6e6 !important;
+                        font-size: 16px !important;
+                        font-weight: bold !important;
+                    }
+                </style>
+
+                <!-- Company Header -->
+                <table class="po-table table table-borderless" style="margin-bottom: 10px;">
+                    <tr>
+                        <td class="po-center po-bold" style="font-size: 15px;">
+                            <t t-if="o.company_id.name">
+                                <span t-field="o.company_id.name"/>
+                            </t>
+                            <t t-else="">
+                                Company Name
+                            </t>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="po-center">
+                            <t t-if="o.company_id.street">
+                                <span t-field="o.company_id.street"/>
+                            </t>
+                            <t t-else="">
+                                Address
+                            </t>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="po-center">
+                            GST.No: 
+                            <t t-if="o.company_id.gstin">
+                                <span t-field="o.company_id.gstin"/>
+                            </t>
+                            <t t-else="">
+                                <span t-field="o.company_id.vat"/>
+                            </t>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="po-center">
+                            CIN No: 
+                            <t t-if="o.company_id.cin_number">
+                                <span t-field="o.company_id.cin_number"/>
+                            </t>
+                            <t t-else="">
+                                <span t-field="o.company_id.company_registry"/>
+                            </t>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="po-center fw-bold po-title">PURCHASE ORDER</td>
+                    </tr>
+                </table>
+
+                <!-- Order Details -->
+                <table class="po-table table table-borderless" style="margin-bottom: 20px;">
+                    <tr>
+                        <td rowspan="3" style="width: 60%;">
+                            <span t-field="o.partner_id.name"/> <br/> 
+                            <span t-field="o.partner_id.street"/> 
+                            <t t-if="o.partner_id.gstin">
+                                <br/>
+                                GSTIN: <span t-field="o.partner_id.gstin"/>
+                            </t>
+                            <t t-if="o.partner_id.code">
+                                <br/>
+                                Ref Code: <span t-field="o.partner_id.code"/>
+                            </t>
+                        </td>
+                        <td style="width: 20%;">
+                            Purchase Order No<br/>
+                            <span t-field="o.name"/>
+                        </td>
+                        <td style="width: 20%;">
+                            Dated :
+                            <span t-field="o.date_order" t-options='{"format": "dd-MM-yyyy"}'/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Quote Ref:<br/>
+                            <span t-field="o.quote_ref"/>
+                        </td>
+                        <td>
+                            Mode /Terms of Payment
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <t t-if="o.payment_term_id">
+                                <span t-field="o.payment_term_id.name"/>
+                            </t>
+                            <t t-else="">
+                                60 Days
+                            </t>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Order Lines Table -->
+                <table class="po-table table table-borderless " style="margin-bottom: 10px;">
+                    <!-- Table Header -->
+                    <thead>
+                        <tr class="po-header">
+                            <th style="width: 5%; text-align: center">S.No</th>
+                            <th style="width: 15%; text-align: center">Part Name</th>
+                            <th style="width: 25%;text-align: center">Description of Goods</th>
+                            <th style="width: 10%;text-align: center">Need On</th>
+                            <th style="width: 10%;text-align: center">Quantity</th>
+                            <th style="width: 10%;text-align: center">Rate</th>
+                            <th style="width: 10%;text-align: center">Per</th>
+                            <th style="width: 5%;text-align: center">Disc%</th>
+                            <th style="width: 10%;text-align: center">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Order Lines -->
+                        <t t-set="index" t-value="1"/>
+                        <t t-foreach="o.order_line" t-as="line">
+                            <tr>
+                                <td class="po-center"><span t-esc="index"/></td>
+                                <td>
+                                    <span t-field="line.product_id.default_code"/>
+                                </td>
+                                <td><span t-field="line.name"/></td>
+                                <td class="po-center">
+                                    <span t-field="line.date_planned" t-options='{"format": "dd/MM/yyyy"}'/>
+                                </td>
+                                <td class="po-right">
+                                    <span t-esc="'{:,.0f}'.format(line.product_qty)"/>
+                                </td>
+                                <td class="po-right">
+                                    <span t-esc="'{:,.0f}'.format(line.price_unit)"/>
+                                </td>
+                                <td class="po-center">
+                                    <span t-field="line.product_uom.name"/>
+                                </td>
+                                <td class="po-center">
+                                    <t t-if="line.discount">
+                                        <span t-esc="'{:.1f}'.format(line.discount)"/>%
+                                    </t>
+                                </td>
+                                <td class="po-right">
+                                    <span t-esc="'{:,.0f}'.format(line.price_subtotal)"/>
+                                </td>
+                            </tr>
+                            <t t-set="index" t-value="index + 1"/>
+                        </t>
+
+                        <t t-set="tax_totals" t-value="{}"/>
+                        <t t-set="tax_id_map" t-value="dict([(t.id, t.tax_group_id.name or t.name) for t in o.order_line.mapped('taxes_id')])"/>
+
+                        <t t-foreach="o.order_line" t-as="line">
+                            <t t-set="taxes" t-value="line.taxes_id.compute_all(line.price_unit, o.currency_id, line.product_qty)['taxes']"/>
+                            <t t-foreach="taxes" t-as="tax">
+                                <t t-set="tax_label" t-value="tax_id_map.get(tax['id'], tax['name'])"/>
+                                <t t-set="tax_amount" t-value="tax['amount']"/>
+                                <t t-set="old_amount" t-value="tax_totals.get(tax_label, 0.0)"/>
+                                <t t-set="tax_totals" t-value="dict(tax_totals, **{tax_label: old_amount + tax_amount})"/>
+                            </t>
+                        </t>
+
+                        <!-- In kết quả -->
+                        <t t-foreach="sorted(tax_totals.items(), key=lambda t: (0 if 'CGST' in t[0].upper() else 1, t[0]))" t-as="tax">
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td style="text-align: right;">
+                                    <t t-esc="tax[0]"/>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+
+                                <td style="text-align: right;">
+                                    <t t-esc="'{:,.0f}'.format(tax[1])"/>
+                                </td>
+                            </tr>
+                        </t>
+
+
+                        <!-- Total Row -->
+                        <tr style="font-weight: bold;" class="po-header fw-bold">
+                            <td colspan="4"  style="font-weight: bold;" class="po-right"><strong>Total</strong></td>
+                            <td class="po-right">
+                                <strong>
+                                    <span t-esc="'{:,.0f}'.format(sum(o.order_line.mapped('product_qty')))"/>
+                                </strong>
+                            </td>
+                            <td colspan="3"></td>
+                            <td class="po-right">
+                                <strong>
+                                    <span t-esc="'{:,.0f}'.format(o.amount_total)"/>
+                                </strong>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="12">
+                                Net Order Value in Words<br/>
+                                <span class="fw-bold" t-esc="o._amount_to_words(o.amount_total)"/>
+                            </td>
+                        </tr>
+
+                        <tr style="height: 100px;">
+                            <td colspan="5" style="vertical-align: top; text-align: center;">
+                                <u>Terms and Conditions</u><br/>
+                                <span t-field="o.notes"/>
+                            </td>
+                            <td colspan="4" style="vertical-align: top;">
+                                Delivery: <span t-field="o.delivery_terms"/><br/>
+                                Other Terms<br/>
+                                <span t-field="o.other_terms"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+
+                <!-- Signature Section -->
+                <table class="po-table table table-borderless mt-4 ">
+                    <tr>
+                        <td class="po-center po-bold" style="width: 25%; height: 100px; vertical-align: top;">
+                            Requested By<br/>
+                            <span t-field="o.requested_by.name"/>
+                        </td>
+                        <td class="po-center po-bold" style="width: 25%; height: 100px; vertical-align: top;">
+                            DIRECTOR
+                        </td>
+                        <td class="po-center po-bold" style="width: 25%; height: 100px; vertical-align: top;">
+                            DIRECTOR
+                        </td>
+                        <td class="po-center po-bold" style="width: 25%; height: 100px; vertical-align: top;">
+                            MD
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            </t>
+        </t>
+    </template>
+</odoo>
