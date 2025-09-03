@@ -172,10 +172,10 @@
                                     <span t-field="line.date_planned" t-options='{"format": "dd/MM/yyyy"}'/>
                                 </td>
                                 <td class="po-right">
-                                    <span t-esc="'{:,.0f}'.format(line.product_qty)"/>
+                                    <span t-esc="(line.product_qty)"/>
                                 </td>
                                 <td class="po-right">
-                                    <span t-esc="'{:,.0f}'.format(line.price_unit)"/>
+                                    <span t-esc="(line.price_unit)"/>
                                 </td>
                                 <td class="po-center">
                                     <span t-field="line.product_uom.name"/>
@@ -186,7 +186,7 @@
                                     </t>
                                 </td>
                                 <td class="po-right">
-                                    <span t-esc="'{:,.0f}'.format(line.price_subtotal)"/>
+                                    <span t-esc="(line.price_subtotal)"/>
                                 </td>
                             </tr>
                             <t t-set="index" t-value="index + 1"/>
@@ -220,7 +220,7 @@
                                 <td></td>
 
                                 <td style="text-align: right;">
-                                    <t t-esc="'{:,.0f}'.format(tax[1])"/>
+                                    <t t-esc="(tax[1])"/>
                                 </td>
                             </tr>
                         </t>
@@ -231,13 +231,13 @@
                             <td colspan="4"  style="font-weight: bold;" class="po-right"><strong>Total</strong></td>
                             <td class="po-right">
                                 <strong>
-                                    <span t-esc="'{:,.0f}'.format(sum(o.order_line.mapped('product_qty')))"/>
+                                    <span t-esc="(sum(o.order_line.mapped('product_qty')))"/>
                                 </strong>
                             </td>
                             <td colspan="3"></td>
                             <td class="po-right">
                                 <strong>
-                                    <span t-esc="'{:,.0f}'.format(o.amount_total)"/>
+                                    <span t-esc="(o.amount_total)"/>
                                 </strong>
                             </td>
                         </tr>
