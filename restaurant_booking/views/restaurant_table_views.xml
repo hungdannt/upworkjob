@@ -1,0 +1,16 @@
+<odoo>
+
+	<record id="action_tables" model="ir.actions.act_window">
+		<field name="name">Tables</field>
+		<field name="res_model">restaurant.table</field>
+		<field name="view_mode">list,form</field>
+	</record>
+
+
+    <record id="action_floors" model="ir.actions.act_window">
+        <field name="name">Floors</field>
+        <field name="res_model">restaurant.floor</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

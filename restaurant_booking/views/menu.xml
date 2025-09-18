@@ -1,0 +1,14 @@
+<odoo>
+	<menuitem id="menu_restaurant_booking_root" name="Bookings" sequence="10"/>
+	<menuitem id="menu_reservation" name="Reservations" parent="menu_restaurant_booking_root" action="action_bookings"/>
+    <menuitem id="menu_config" name="Configuration" parent="menu_restaurant_booking_root"/>
+
+    <!-- <menuitem id="menu_restaurant_table" name="Tables" parent="menu_config" action="pos_restaurant.action_restaurant_floor_form" sequence="2"/> -->
+    <menuitem id="menu_restaurant_floor" name="Floors" parent="menu_config" action="pos_restaurant.action_restaurant_floor_form" sequence="3"/>
+
+    <record id="menu_booking" model="website.menu">
+        <field name="name">Bookings</field>
+        <field name="url">/booking</field>
+        <field name="parent_id" ref="website.main_menu"/>
+    </record>
+</odoo>

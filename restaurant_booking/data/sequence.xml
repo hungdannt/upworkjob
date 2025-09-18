@@ -1,0 +1,9 @@
+<odoo>
+    <record id="seq_restaurant_booking" model="ir.sequence">
+        <field name="name">Restaurant Booking</field>
+        <field name="code">restaurant.booking</field>
+        <field name="prefix">MV</field>
+        <field name="padding">6</field>
+        <field name="number_next">1</field>
+    </record>
+</odoo>

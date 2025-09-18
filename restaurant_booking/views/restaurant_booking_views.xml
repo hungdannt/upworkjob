@@ -1,0 +1,45 @@
+<odoo>
+	<record id="view_booking_tree" model="ir.ui.view">
+		<field name="name">restaurant.booking.tree</field>
+		<field name="model">restaurant.booking</field>
+		<field name="arch" type="xml">
+			<list>
+				<field name="name"/>
+				<field name="customer_name"/>
+				<field name="customer_phone"/>
+				<field name="booking_date"/>
+				<field name="booking_time"/>
+				<field name="guest_count"/>
+				<field name="state"/>
+			</list>
+		</field>
+	</record>
+
+	<record id="view_booking_form" model="ir.ui.view">
+		<field name="name">restaurant.booking.form</field>
+		<field name="model">restaurant.booking</field>
+		<field name="arch" type="xml">
+			<form>
+				<sheet>
+					<group>
+						<field name="customer_name"/>
+						<field name="customer_phone"/>
+						<field name="customer_email"/>
+						<field name="booking_date"/>
+						<field name="booking_time"/>
+						<field name="guest_count"/>
+						<field name="notes"/>
+						<field name="table_ids" widget="many2many_tags"/>
+						<field name="state"/>
+					</group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="action_bookings" model="ir.actions.act_window">
+		<field name="name">Bookings</field>
+		<field name="res_model">restaurant.booking</field>
+		<field name="view_mode">list,form</field>
+	</record>
+</odoo>
