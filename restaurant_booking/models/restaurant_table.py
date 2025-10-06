@@ -5,5 +5,7 @@ class RestaurantTable(models.Model):
 
     state = fields.Selection([
         ('available', 'Available'),
-        ('booked', 'Booked')
+        ('booked', 'Booked'),
+        ('occupied', 'Occupied'),
+        ('no_show', 'No Show')
     ], default='available')

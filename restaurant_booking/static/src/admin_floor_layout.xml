@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="restaurant_booking.AdminFloorLayout" owl="1">
+        <div class="o_admin_floor_page">
+            <div class="d-flex justify-content-between align-items-center p-3 bg-white border-bottom shadow">
+                <select class="form-select w-auto" style="min-width: 200px;" t-att-value="state.activeFloor" t-on-change="selectFloor">
+                    <option t-foreach="state.floors" t-as="floor" 
+                            t-key="floor.id" 
+                            t-att-value="floor.id">
+                        <t t-esc="floor.name"/>
+                    </option>
+                </select>
+                <button class="btn btn-primary" t-on-click="() => this.assignSelectedBooking()">Assign Booking to Selected Table</button>
+            </div>
+            
+            <div class="d-flex flex-row-reverse gap-3 p-3 flex-fill">
+                <div class="bg-white border rounded p-3 shadow" style="flex: 0 0 450px; max-height: 600px; overflow-y: auto;">
+                    <h4 class="mb-3 pb-2 border-bottom">Pending bookings</h4>
+                    <div
+                        t-foreach="pendingBookingsForFloor()"
+                        t-as="b"
+                        t-key="b.id"
+                        t-att-class="'p-2 mb-2 border rounded cursor-pointer booking-row ' + (state.selectedBooking === b.id ? 'bg-primary text-white' : 'bg-light')"
+                        t-on-mouseenter="(ev) => this.onHoverBooking(ev, b)"
+                        t-on-mouseleave="() => this.hideOverlay()"
+                        t-on-click="() => this.onSelectBooking(b)"
+                        >
+                        <div class="fw-medium">
+                            <t t-esc="b.name"/> | <t t-esc="b.booking_date"/> | <t t-esc="b.slot_id[1]"/> | <t t-esc="b.guest_count"/> people
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white border rounded shadow flex-fill" style="position:relative; height:600px; overflow:auto;">
+                    <t t-foreach="state.tables" t-as="table" t-key="table.id">
+                        <div
+                            t-att-id="'table-' + table.id"
+                            t-att-style="this.tableStyle(table)"
+                            t-att-class="'admin-table table-' + table.id + ' position-absolute d-flex align-items-center justify-content-center fw-bold ' + (table.state === 'booked' ? 'booked' : 'available') + (state.selectedTable === table.id ? ' selected' : '')"
+                            t-on-click="(ev) => this.onClickTable(ev, table)"
+                            style="width: 60px; height: 60px; cursor: pointer;"
+                        >
+                            <div style="pointer-events:none;">
+                                <div class="table-name">T<t t-esc="table.table_number"/></div>
+                                <div class="table-capacity">
+                                    <i class="fa fa-user"></i> <t t-esc="table.seats"/> people
+                                </div>
+                                <t t-if="table.state !== 'available'">
+                                    <span class="booked-label"><t t-esc="table.state"/></span>
+                                </t>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </div>
+        <t t-if="state.hoverBooking">
+            <div class="booking-overlay" t-att-style="this.overlayStyle">
+                <strong><t t-esc="state.hoverBooking.name"/></strong><br/>
+                Customer: <t t-esc="state.hoverBooking.customer_name"/><br/>
+                Phone: <t t-esc="state.hoverBooking.customer_phone"/><br/>
+                Email: <t t-esc="state.hoverBooking.customer_email"/><br/>
+                Date: <t t-esc="state.hoverBooking.booking_date"/><br/>
+                Slot: <t t-esc="state.hoverBooking.slot_id[1]"/> <br/>
+                Notes: <t t-esc="state.hoverBooking.notes"/> <br/>
+                Guests: <t t-esc="state.hoverBooking.guest_count"/><br/>
+                Created: <t t-esc="state.hoverBooking.create_date"/>
+            </div>
+        </t>
+    </t>
+</templates>
+

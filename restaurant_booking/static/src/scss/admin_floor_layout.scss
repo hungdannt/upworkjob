@@ -1,0 +1,69 @@
+.admin-table {
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.admin-table.available {
+    background: #7dd3fc;
+    color: #0c4a6e;
+}
+
+.admin-table.available:hover {
+    background: #38bdf8;
+    transform: scale(1.1);
+}
+
+.admin-table.available.selected {
+    border-color: #e90e0e;
+    background-color: floralwhite;
+    color: #0c4a6e;
+    transform: scale(1.15);
+}
+
+.admin-table {
+    &.booked {
+        background: #6b7280;
+        color: white;
+        cursor: not-allowed ;
+        .booked-label {
+            position: absolute;
+            top: 4px;
+            right: 1px;
+            background: #ef4444;
+            color: white;
+            padding: 1px 3px;
+            border-radius: 4px;
+            font-size: 10px;
+        }
+    }
+}
+
+.table-name {
+    font-size: 16px;
+    text-align: center;
+}
+
+.table-capacity {
+    font-size: 11px;
+    opacity: 0.8;
+    
+    i {
+        margin-right: 5px;
+    }
+}
+
+.booking-overlay {
+    position: fixed;
+    z-index: 1000;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 8px 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    min-width: 180px;
+    font-size: 13px;
+    transition: opacity 0.2s;
+  }
+  

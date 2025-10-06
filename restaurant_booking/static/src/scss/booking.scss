@@ -1,4 +1,4 @@
-.table-selection-portal {
+.booking-form-portal {
     .booking-info {
         background: #f8f9fa;
         padding: 20px 0;
@@ -106,79 +106,54 @@
     }
 }
 
-
-.modal {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-    
-    &.show {
-        opacity: 1;transition: opacity 0.3s ease;
-        pointer-events: auto;
-    }
-    
-    .modal-dialog {
-        transform: translateY(-50px) scale(0.95);
-        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    
-    &.show .modal-dialog {
-        transform: translateY(0) scale(1);
-    }
-}
-
-/* Backdrop animation */
-.modal-backdrop {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    
-    &.show {
-        opacity: 0.5;
-    }
-}
-
 /* Custom modal styles */
-.booking-modal {
-    .modal-content {
+.table-booking-card {
+    .card {
         border: none;
         border-radius: 15px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        box-shadow: 0 8px 30px rgba(0,0,0,0.15);
         overflow: hidden;
     }
-    
-    .modal-header {
+
+    .card-header {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
+        color: #fff;
         padding: 20px 30px;
-        
-        .modal-title {
+
+        h5 {
             font-weight: 600;
             font-size: 1.25rem;
-        }
-        
-        .btn-close {
-            background: none;
-            opacity: 0.8;
-            filter: brightness(0) invert(1);
-            
-            &:hover {
-                opacity: 1;
-                transform: scale(1.1);
-            }
+            margin: 0;
         }
     }
-    
-    .modal-body {
+
+    .card-body {
         padding: 30px;
+
+        .form-floating > .form-control,
+        .form-floating > .form-select {
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .form-floating > label {
+            font-size: 0.9rem;
+            color: #666;
+        }
     }
-    
-    .modal-footer {
-        padding: 20px 30px;
-        border: none;
-        background: #f8f9fa;
+
+    .btn-lg {
+        border-radius: 10px;
+        padding: 10px 25px;
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+
+        &:hover {
+            box-shadow: 0 6px 16px rgba(118,75,162,0.35);
+        }
     }
 }
+
 
 /* Form animations */
 .form-floating {
@@ -230,7 +205,3 @@ select.form-select {
     background-color: #e0b7b7;
 }
 
-.modal-open {
-    overflow: hidden;
-    padding-right: var(--bs-scrollbar-width); /* tránh nhảy layout */
-  }

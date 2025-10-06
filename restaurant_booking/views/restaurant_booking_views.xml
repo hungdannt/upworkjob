@@ -8,9 +8,11 @@
 				<field name="customer_name"/>
 				<field name="customer_phone"/>
 				<field name="booking_date"/>
-				<field name="booking_time"/>
+				<field name="slot_id"/>
+				<field name="table_id"/>
+				<field name="pos_order_id"/>
 				<field name="guest_count"/>
-				<field name="state"/>
+				<field name="state" widget="badge"/>
 			</list>
 		</field>
 	</record>
@@ -25,11 +27,13 @@
 						<field name="customer_name"/>
 						<field name="customer_phone"/>
 						<field name="customer_email"/>
+						<field name="partner_id"/>
 						<field name="booking_date"/>
-						<field name="booking_time"/>
 						<field name="guest_count"/>
 						<field name="notes"/>
-						<field name="table_ids" widget="many2many_tags"/>
+						<field name="table_id"/>
+						<field name="slot_id"/>
+						<field name="pos_order_id"/>
 						<field name="state"/>
 					</group>
 				</sheet>

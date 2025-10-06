@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="pos_restaurant.BookingList">
+        <Dialog bodyClass="'booking-list overflow-y-auto'" contentClass="'h-100'">
+            <t t-set-slot="header">
+                <Input tModel="[state, 'query']"
+                    class="'ms-auto'"
+                    isSmall="ui.isSmall"
+                    placeholder.translate="Search Bookings..."
+                    icon="{type: 'fa', value: 'fa-search'}"
+                    autofocus="true"
+                    debounceMillis="100"
+                    t-on-input="updateQuery"/>
+            </t>
+            <table class="table table-hover">
+                <thead t-if="!ui.isSmall">
+                    <tr>
+                        <th class="py-2">Customer</th>
+                        <th class="py-2">Booking Date</th>
+                        <th class="py-2">Time Slot</th>
+                        <th class="py-2">Guests</th>
+                        <th class="py-2">Created At</th>
+
+                        <!-- <th class="py-2"></th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="state.bookings" t-as="booking" t-key="booking.id">
+                        <tr t-att-class="{'active': booking.id === props.booking?.id}" t-on-click="() => this.clickBooking(booking)">
+                            <td>
+                                <div><strong><t t-esc="booking.customer_name"/></strong></div>
+                                <div><t t-esc="booking.customer_phone"/></div>
+                                <div><t t-esc="booking.customer_email"/></div>
+                            </td>
+                            <td><t t-esc="booking.booking_date"/></td>
+                            <td><t t-esc="booking.slot_id[1]"/></td>
+                            <td><t t-esc="booking.guest_count"/></td>   
+                            <td><t t-esc="booking.create_date"/></td>
+                            <!-- <td>
+                                <button class="btn btn-sm btn-primary">Select</button>
+                            </td> -->
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+            <div t-if="state.query" class="search-more-button d-flex justify-content-center my-2">
+                <button class="btn btn-lg btn-primary" t-on-click="onEnter">Search more</button>
+            </div>
+            <t t-set-slot="footer">
+                <div class="d-flex justify-content-start flex-wrap gap-2 w-100">
+                    <button class="btn btn-secondary btn-lg lh-lg o-default-button"
+                        t-on-click="() => this.clickBooking(this.props.booking)">
+                        Discard
+                    </button>
+                </div>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>

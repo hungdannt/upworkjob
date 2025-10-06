@@ -1,145 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="restaurant_booking.TableBookingTemplate" owl="1">
-        <div class="table-selection-portal">
-            <div class="container mt-3 mb-3">
+        <div class="booking-form-portal">
+            <div class="container mt-3 mb-5">
                 <!-- Restaurant Image -->
-                <div class="restaurant-image mb-4">
+                <div class="restaurant-image mb-4 text-center">
                     <img src="/restaurant_booking/static/img/restaurant.jpg" class="img-fluid rounded"/>
                 </div>
 
-                <div class="d-flex gap-2 align-items-center justify-content-center mb-3">
-                    <h6 class="mb-0">Select Floor:</h6>
-                    <select class="form-select w-auto" t-on-change="onFloorChange">
-                        <option t-foreach="state.floors" t-as="floor" 
-                                t-key="floor.id" 
-                                t-att-value="floor.id"
-                                t-att-selected="floor.id === state.selectedFloor">
-                            <t t-esc="floor.name"/>
-                        </option>
-                    </select>
-                </div>
-                
-                <!-- Tables Grid -->
-                <div class="tables-grid">
-                    <t t-if="state.tables.length === 0">
-                        <p class="text-muted text-center">Please select a floor to view tables</p>
-                    </t>
-                    <t t-else="">
-                        <div t-foreach="state.tables" t-as="table" t-key="table.id"
-                             t-att-class="`table-card ${table.state === 'booked' ? 'booked' : 'available'} ${isTableSelected(table.id) ? 'selected' : ''}`"
-                             t-on-click="() => this.onTableClick(table.id)">
-                            <div class="table-name">T<t t-esc="table.table_number"/></div>
-                            <div class="table-capacity">
-                                <i class="fa fa-user"></i> <t t-esc="table.seats"/> people
-                            </div>
-                            <t t-if="table.state === 'booked'">
-                                <span class="booked-label">Booked</span>
-                            </t>
-                        </div>
-                    </t>
-                </div>
-
-                <!-- Next Button -->
-                <div class="text-end mt-4">
-                    <button class="btn btn-primary btn-lg" 
-                            t-att-disabled="!canProceed"
-                            t-on-click="onNextClick">
-                        Next
-                    </button>
-                </div>
-            </div>
-
-            <div class="modal booking-modal" t-ref="bookingModal" t-on-click="onBackdropClick">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">
-                                <i class="fas fa-utensils me-2"></i>
-                                Complete Your Reservation
-                            </h5>
-                            <button type="button" class="btn-close" t-on-click="closeModal" t-att-disabled="state.modalAnimating"></button>
-                        </div>
+                <div class="card shadow-sm table-booking-card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-calendar-check me-2"></i>
+                            Table Reservation
+                        </h5>
+                    </div>
+                    <div class="card-body">
                         <form t-on-submit="onSubmitBooking">
-                            <div class="modal-body">
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <div class="form-floating">
-                                            <input type="text" class="form-control" name="customer_name" placeholder="Full Name" required=""/>
-                                            <label>Full Name *</label>
-                                        </div>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" name="customer_name" placeholder="Full Name" required=""/>
+                                        <label>Full Name *</label>
+                                    </div>  
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="tel" class="form-control" name="customer_phone" placeholder="Phone" required=""/>
+                                        <label>Phone Number *</label>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating">
-                                            <input type="tel" class="form-control" name="customer_phone" placeholder="Phone" required=""/>
-                                            <label>Phone Number *</label>
-                                        </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control" name="customer_email" placeholder="Email"/>
+                                        <label>Email Address</label>
                                     </div>
-                                    <div class="col-12">
-                                        <div class="form-floating">
-                                            <input type="email" class="form-control" name="customer_email" placeholder="Email"/>
-                                            <label>Email Address</label>
-                                        </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="date" class="form-control" t-att-value="state.date" widget="date" name="booking_date" t-on-change="onDateChange" required=""/>
+                                        <label>Date *</label>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating">
-                                            <input type="date" class="form-control" name="booking_date" required=""/>
-                                            <label>Date *</label>
-                                        </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <select t-if="state.timeSlots" class="form-control" name="booking_time" required="">
+                                            <t t-foreach="state.timeSlots" t-as="slot" t-key="slot.id">
+                                                <option t-att-value="slot.id"><t t-esc="slot.name"/></option>
+                                            </t>
+                                        </select>
+                                        <t t-else="">
+                                            <span class="form-control">No available time slots now, please try later or choose another date</span>
+                                        </t>
+                                        <label>Time Slot *</label>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating">
-                                            <select class="form-control" name="booking_time" required="">
-                                                <option value="">Select time...</option>
-                                                <option value="17:00">05:00 PM</option>
-                                                <option value="18:00">06:00 PM</option>
-                                                <option value="19:00">07:00 PM</option>
-                                                <option value="20:00">08:00 PM</option>
-                                                <option value="21:00">09:00 PM</option>
-                                            </select>
-                                            <label>Time *</label>
-                                        </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control" name="guest_count" min="1" max="20" value="2" required=""/>
+                                        <label>Number of Guests *</label>
                                     </div>
-                                    <div class="col-12">
-                                        <div class="form-floating">
-                                            <input type="number" class="form-control" name="guest_count" min="1" max="20" value="2" required=""/>
-                                            <label>Number of Guests *</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-floating">
-                                            <textarea class="form-control" name="notes" placeholder="Special requests..." style="height: 80px;"></textarea>
-                                            <label>Special Notes</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="alert alert-info">
-                                            <strong>
-                                                <i class="fas fa-chair me-2"></i>
-                                                Selected Tables: 
-                                            </strong>
-                                            <span t-esc="getSelectedTableNames()"></span>
-                                        </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <textarea class="form-control" name="notes" placeholder="Special requests..." style="height: 80px;"></textarea>
+                                        <label>Special Notes</label>
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-outline-secondary" t-on-click="closeModal" t-att-disabled="state.loading">Cancel</button>
-                                <button type="submit" class="btn btn-primary" t-att-disabled="state.loading || state.modalAnimating">
+
+                            <div class="text-end mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg" t-att-disabled="state.loading">
                                     <t t-if="state.loading">
                                         <span class="spinner-border spinner-border-sm me-2"></span>
                                         Processing...
                                     </t>
                                     <t t-else="">
                                         <i class="fa fa-check me-2"></i>
-                                        Confirm Booking
+                                        Submit
                                     </t>
                                 </button>
                             </div>
                         </form>
-                        </div>
                     </div>
                 </div>
             </div>
+        </div>
     </t>
 </templates>
+

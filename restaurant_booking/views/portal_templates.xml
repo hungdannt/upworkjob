@@ -4,27 +4,26 @@
             <owl-component name="restaurant_booking.TableBooking" />
         </t>
     </template>
+    <template id="admin_floor_layout_template" name="Admin Floor Layout">
+        <t t-call="website.layout">
+            <owl-component name="restaurant_booking.AdminFloorLayout" />
+        </t>
+    </template>
 
     <template id="booking_success_template" name="Booking Success">
         <t t-call="website.layout">
-            <div class="container mt-3 text-center mb-4">
-                <div class="card mx-auto" style="max-width: 600px;">
-                    <div class="card-body p-5">
-                        <i class="fa fa-check-circle text-success" style="font-size: 4rem;"></i>
-                        <h2 class="mt-3 text-success">Booking Confirmed!</h2>
-                        <p class="lead">Your table reservation has been successfully created.</p>
-                        
-                        <div class="booking-details mt-4">
-                            <h5>Booking Details:</h5>
-                            <p><strong>Booking ID:</strong> <t t-esc="booking.name or booking.id"/></p>
-                            <p><strong>Name:</strong> <t t-esc="booking.customer_name"/></p>
-                            <p><strong>Phone:</strong> <t t-esc="booking.customer_phone"/></p>
-                            <p><strong>Date &amp; Time:</strong> <t t-esc="booking.booking_date"/> at <t t-esc="booking.booking_time"/></p>
-                            <p><strong>Guests:</strong> <t t-esc="booking.guest_count"/> people</p>
-                        </div>
-                        
-                        <a href="/booking" class="btn btn-primary mt-3">Book Another Table</a>
+            <div class="card text-center shadow-lg border-0 rounded-3 p-5">
+                <div class="card-body">
+                    <div class="mb-4">
+                        <i class="fa fa-check-circle text-success fa-4x"></i>
                     </div>
+                    <h2 class="fw-bold mb-3">Thank You!</h2>
+                    <p class="text-muted mb-4">
+                       Thank you for your table reservation request. We will confirm your booking shortly
+                    </p>
+                    <a href="/" class="btn btn-primary btn-lg rounded-pill">
+                        <i class="fa fa-home me-2"></i> Back to Home
+                    </a>
                 </div>
             </div>
         </t>
